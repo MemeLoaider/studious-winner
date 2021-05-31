@@ -61,6 +61,10 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 :iabbrev 1kir Kirish_Example@example.com
 :iabbrev 1sig --<cr>Kirish<cr>Kirish_Example@example.com
 
+"Terminal"
+:set splitbelow
+:term ++rows=20
+
 "----------AUTOCMDs----------"
 :autocmd FileType python nnoremap <localleader>c I#<esc>
 
