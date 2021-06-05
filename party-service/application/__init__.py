@@ -22,10 +22,10 @@ def init_app():
     db.init_app(app)
 
     with app.app_context():
-        from . import party
+        from .party import routes
 
         #Registering blueprints
-        app.register_blueprint(party.party_bp)
+        app.register_blueprint(routes.party_bp)
 
         #Running init_db.sql script
         with app.open_resource('init_db.sql') as sql_file:
