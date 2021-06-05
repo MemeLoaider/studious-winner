@@ -1,8 +1,10 @@
 ###Flask Configuration"""
 from os import path, environ
+from dotenv import load_dotenv 
 
 
 basedir = path.abspath(path.dirname(__file__))
+load_dotenv(path.join(basedir, '.env'))
 
 
 class Config:
@@ -11,7 +13,9 @@ class Config:
 
 class LocalConfig(Config):
     """Configuration for running Flask locally"""
-    FLASK_ENV = 'local'
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:1234@localhost:3307/mysql"#environ.get('LOCAL_DB_MYSQL')
+    FLASK_ENV = environ.get('FLASK_ENV')
+    SQLALCHEMY_DATABASE_URI = environ.get('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_ECHO = False
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+
+
