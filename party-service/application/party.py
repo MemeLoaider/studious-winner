@@ -45,3 +45,11 @@ def update_party():
     return prepare_json_response(json_body={"status": f"host at party_id {new_host_json['party_id']} has been updated"},
                                  status_code=200)
 
+
+@party_bp.route('/party/<int:party_id>', methods=['DELETE'])
+def delete_party_by_id(party_id):
+    Party.query.filter(Party.party_id == party_id).delete()
+    db.session.commit()
+    return prepare_json_response(json_body={"status": f"party with party_id = {party_id} has been deleted"},
+                                 status_code=200)
+
