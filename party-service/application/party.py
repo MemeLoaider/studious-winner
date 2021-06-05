@@ -35,3 +35,13 @@ def create_party():
     return prepare_json_response(json_body={"status": f"party with host {party_json['host']} has been created"},
                                  status_code=201)
    
+
+@party_bp.route('/party/update-host', methods=['PUT'])
+def update_party():
+    new_host_json = request.get_json()
+    party_to_update = Party.query.get(new_host_json["party_id"])
+    party_to_update.host = new_host_json["host"]
+    db.session.commit()
+    return prepare_json_response(json_body={"status": f"host at party_id {new_host_json['party_id']} has been updated"},
+                                 status_code=200)
+
