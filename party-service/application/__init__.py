@@ -30,6 +30,7 @@ def init_app():
         #Running init_db.sql script
         with app.open_resource('init_db.sql') as sql_file:
             list_of_commands = sql_file.read().decode('utf8').strip().split(";")
+            #Making a slice of commands because the last command is empty
             for command in list_of_commands[:-1]:
                 db.engine.execute(command)
 
