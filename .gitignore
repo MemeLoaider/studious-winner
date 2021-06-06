@@ -1,4 +1,4 @@
 ###Ignoring ptyhon stuff###
-party-service/env/*
+**/env
 **/__pycache__
 **/.env
