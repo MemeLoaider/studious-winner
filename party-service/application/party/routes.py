@@ -12,7 +12,7 @@ def party():
     if request.method == 'GET':
         return p.get_all_parties()
     elif request.method == 'POST':
-        return p.create_party()
+        return p.create_party(request.get_json())
     else:
         return prepare_json_response(json_body={"status": "incorrect request has been detected"},
                                      status_code=400)

@@ -39,16 +39,22 @@ def get_all_parties():
     return prepare_json_response(parties_list, 200)
 
 
-def create_party():
+def create_party(party_json):
     """Creates a party and inserts it into party_stuff table"""
-    party_json = request.get_json()
     db.session.add(Party(
             host=party_json["host"],
             place=party_json["place"],
             number_of_ppl=party_json["number_of_ppl"]
         ))
     db.session.commit()
-    return prepare_json_response(json_body={"status": f"party with host {party_json['host']} has been created"},
+    # Searching for newly created party by given params
+    newly_created_party = Party.query.filter(Party.host == party_json['host'] 
+                                             and Party.place == party_json['place'] 
+                                             and Party.number_of_ppl == party_json['number_of_ppl']).order_by(Party.party_id.desc()).first()
+    return prepare_json_response(json_body={
+                                            "status": f"party with host {party_json['host']} has been created",
+                                            "party_id": f"{newly_created_party.party_id}"
+                                           },
                                  status_code=201)   
 
 
