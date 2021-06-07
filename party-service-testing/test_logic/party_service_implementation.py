@@ -1,14 +1,17 @@
 ###party_service_implementation.py###
 import requests
-import test_config
-from .data_transfer_objects import Party
+from .data_transfer_objects import Party, UpdateHostDTO
 
 
 class PartyService:
 
-    base_url = test_config.PARTY_SERVICE_URL
-    get_all_parties_endpoint = test_config.GET_ALL_PARTIES_ENDPOINT
-    create_party_endpoint = test_config.CREATE_PARTY_ENDPOINT
+
+    def __init__(self, endpoints: dict):
+        self.base_url = endpoints['base_url']
+        self.get_all_parties_endpoint = endpoints['get_all_parties_endpoint']
+        self.create_party_endpoint = endpoints['create_party_endpoint']
+        self.update_party_host_endpoint = endpoints['update_party_host_endpoint']
+    
 
     def get_all_parties(self):
         """Returns all parties from database as a list of Party objects"""
@@ -22,5 +25,14 @@ class PartyService:
         Returns a json response with status-message."""
         response = requests.post(f"{self.base_url}{self.create_party_endpoint}",
                                  json=party.__dict__)
+        return response.json()
+
+    
+    def update_party_host(self, host_to_update: UpdateHostDTO):
+        """Parses given <host_to_update> DTO into json and sends this data.
+        As the result host is being updated in DB.
+        Returns a json response"""
+        response = requests.put(url=f"{self.base_url}{self.update_party_host_endpoint}",
+                                json=host_to_update.__dict__)
         return response.json()
 
