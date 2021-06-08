@@ -1,7 +1,25 @@
 ###data_transfer_objects.py###
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String
 
-class Party:
+
+Base = declarative_base()
+
+class Party(Base):
     """Represents Party DTO"""
+
+    __tablename__ = "party_stuff"
+
+    host = Column(String)
+    number_of_ppl = Column(Integer)
+    party_id = Column(Integer, primary_key=True)
+    place = Column(String)
+
+    
+    def as_json(self):
+        return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+
     def __init__(self, host, number_of_ppl, party_id, place):
         self.host = host
         self.number_of_ppl = number_of_ppl
