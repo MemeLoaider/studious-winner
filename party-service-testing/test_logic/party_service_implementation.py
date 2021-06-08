@@ -24,7 +24,7 @@ class PartyService:
         As the result a new party is inserted into database.
         Returns a json response with status-message."""
         response = requests.post(f"{self.base_url}{self.create_party_endpoint}",
-                                 json=party.__dict__)
+                                 json=party.as_json())
         return response.json()
 
     
