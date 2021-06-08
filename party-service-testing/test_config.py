@@ -2,6 +2,9 @@
 from os import path, environ
 from dotenv import load_dotenv
 from test_logic.party_service_implementation import PartyService
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from test_logic.models import PartyStuffWrapper
 import pytest
 
 
@@ -16,6 +19,7 @@ PARTY_SERVICE_URL = environ.get('PARTY_SERVICE_URL')
 GET_ALL_PARTIES_ENDPOINT = environ.get('GET_ALL_PARTIES_ENDPOINT')
 CREATE_PARTY_ENDPOINT = environ.get('CREATE_PARTY_ENDPOINT')
 UPDATE_HOST_ENDPOINT = environ.get('UPDATE_HOST_ENDPOINT')
+DB_URL = environ.get('DB_URL')
 
 
 # Creating fixtures for pytest below
@@ -27,4 +31,19 @@ def party_service() -> PartyService:
             'create_party_endpoint': CREATE_PARTY_ENDPOINT,
             'update_party_host_endpoint': UPDATE_HOST_ENDPOINT
         })
+
+
+@pytest.fixture(scope='session')
+def db_session():
+    engine = create_engine(DB_URL, echo=False) 
+    Session = sessionmaker(bind=engine)
+    session = Session()
+    yield session
+    print('closing db session...')
+    session.close()
+
+
+@pytest.fixture(scope='session')
+def db_wrapper(db_session) -> PartyStuffWrapper:
+    return PartyStuffWrapper(db_session)
 
