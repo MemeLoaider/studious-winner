@@ -4,6 +4,17 @@ from .. import db, prepare_json_response
 from collections import OrderedDict
 
 
+class StatusMessage:
+    """Represents json response with party_id and status message"""
+    def __init__(self, party_id, status):
+        self.party_id = party_id
+        self.status = status
+
+
+    def __str__(self):
+        return f"StatusMessage(party_id: {self.party_id}; status: {self.status})"
+
+
 class Party(db.Model):
     """Data model for parties"""
     __tablename__ = "party_stuff"
@@ -27,7 +38,7 @@ def get_single_party_by_id(party_id):
     """Returns single party by <party_id> from party_stuff table"""
     party = Party.query.filter(Party.party_id == party_id).first()
     if party is None:
-        return prepare_json_response(json_body={"message": f"party with party_id {party_id} was not found"}, 
+        return prepare_json_response(json_body=StatusMessage(party_id, f"Party was not found").__dict__, 
                                      status_code=404) 
     else:
         return prepare_json_response(party.make_dir_from_instance(), 200) 
@@ -51,10 +62,7 @@ def create_party(party_json):
     newly_created_party = Party.query.filter(Party.host == party_json['host'] 
                                              and Party.place == party_json['place'] 
                                              and Party.number_of_ppl == party_json['number_of_ppl']).order_by(Party.party_id.desc()).first()
-    return prepare_json_response(json_body={
-                                            "status": f"party with host {party_json['host']} has been created",
-                                            "party_id": f"{newly_created_party.party_id}"
-                                           },
+    return prepare_json_response(json_body=StatusMessage(party_id=newly_created_party.party_id, status=f"Party has been created successfully").__dict__,
                                  status_code=201)   
 
 
@@ -62,6 +70,15 @@ def delete_party_by_id(party_id):
     """Deletes party with given <party_id> from the party_stuff table"""
     Party.query.filter(Party.party_id == party_id).delete()
     db.session.commit()
-    return prepare_json_response(json_body={"status": f"party with party_id = {party_id} has been deleted"},
+    return prepare_json_response(json_body=StatusMessage(party_id, f"Party has been deleted").__dict__,
                                  status_code=200)
+
+def update_party(new_host_json):
+    """Updates party host at given <party_id> in json"""
+    party_to_update = Party.query.get(new_host_json["party_id"])
+    party_to_update.host = new_host_json["host"]
+    db.session.commit()
+    return prepare_json_response(StatusMessage(new_host_json["party_id"], f"Party host has been updated").__dict__,
+                                 status_code=200)
+
 
