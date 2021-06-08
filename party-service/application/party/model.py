@@ -76,6 +76,8 @@ def delete_party_by_id(party_id):
 def update_party(new_host_json):
     """Updates party host at given <party_id> in json"""
     party_to_update = Party.query.get(new_host_json["party_id"])
+    if party_to_update == None:
+        return prepare_json_response(StatusMessage(new_host_json['party_id'], f"Party was not found").__dict__, 404)
     party_to_update.host = new_host_json["host"]
     db.session.commit()
     return prepare_json_response(StatusMessage(new_host_json["party_id"], f"Party host has been updated").__dict__,
