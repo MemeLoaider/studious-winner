@@ -1,9 +1,19 @@
 from flask import Flask, Response, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from logging.config import dictConfig
 
 
 #global variables
 db = SQLAlchemy()
+
+
+#Configuring logging
+dictConfig({
+    'version': 1,
+    'root': {
+        'level': 'INFO'
+    }
+})
 
 
 def prepare_json_response(json_body:dict, status_code:int) -> Response:
