@@ -44,3 +44,21 @@ def test_change_party_host(party_service, db_wrapper):
     # Cleaning our test data
     db_wrapper.delete_party_by_id(party_to_create.party_id)
 
+
+def test_delete_party(party_service, db_wrapper):
+    #Creating party for testing
+    list_of_all_parties = db_wrapper.get_all_parties_from_db()
+    last_used_party_id = list_of_all_parties[-1].party_id
+    party_to_create = Party(
+                        party_id=last_used_party_id+1,
+                        host="LameHost",
+                        place="SupaPlace",
+                        number_of_ppl="2020"
+                     )
+    db_wrapper.create_party_in_db(party_to_create)
+
+    #Sending request to delete this party
+    response = party_service.delete_party_by_id(party_to_create.party_id)
+    assert response['status'] == "Party has been deleted"
+    assert response['party_id'] == party_to_create.party_id
+
