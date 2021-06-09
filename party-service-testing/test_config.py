@@ -20,6 +20,7 @@ GET_ALL_PARTIES_ENDPOINT = environ.get('GET_ALL_PARTIES_ENDPOINT')
 CREATE_PARTY_ENDPOINT = environ.get('CREATE_PARTY_ENDPOINT')
 UPDATE_HOST_ENDPOINT = environ.get('UPDATE_HOST_ENDPOINT')
 DB_URL = environ.get('DB_URL')
+DELETE_PARTY_ENDPOINT = environ.get('DELETE_PARTY_ENDPOINT')
 
 
 # Creating fixtures for pytest below
@@ -29,7 +30,8 @@ def party_service() -> PartyService:
             'base_url': PARTY_SERVICE_URL,
             'get_all_parties_endpoint': GET_ALL_PARTIES_ENDPOINT,
             'create_party_endpoint': CREATE_PARTY_ENDPOINT,
-            'update_party_host_endpoint': UPDATE_HOST_ENDPOINT
+            'update_party_host_endpoint': UPDATE_HOST_ENDPOINT,
+            'delete_party_by_id_endpoint': DELETE_PARTY_ENDPOINT
         })
 
 
