@@ -1,7 +1,9 @@
 ###Ignoring ptyhon stuff###
 **/env
 **/__pycache__
-**/.env
+
+###Ignoring .env files###
+**/.env*
 
 ###Ignoring Vim stuff###
 **/*.swp
