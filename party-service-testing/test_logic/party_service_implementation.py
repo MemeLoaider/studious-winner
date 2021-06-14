@@ -13,6 +13,7 @@ class PartyService:
         self.create_party_endpoint = endpoints['create_party_endpoint']
         self.update_party_host_endpoint = endpoints['update_party_host_endpoint']
         self.delete_party_by_id_endpoint = endpoints["delete_party_by_id_endpoint"]
+        self.get_single_party_by_id_endpoint = endpoints['get_single_party_by_id']
         self.dictionary = endpoints 
 
 
@@ -22,6 +23,12 @@ class PartyService:
         response = requests.get(f"{self.base_url}{self.get_all_parties_endpoint}")
         return [Party.init_from_dictionary(party_json) for party_json in response.json()]
 
+    
+    @log_request_and_response(request_method="GET", endpoint="get_single_party_by_id")
+    def get_single_party_by_id(self, party_id):
+        """Returns a single party response as json by given <party_id>"""
+        return requests.get(f"{self.base_url}{self.get_single_party_by_id_endpoint}{party_id}")
+        
 
     @log_request_and_response(request_method="POST", endpoint="create_party_endpoint")
     def create_party(self, party: Party):
@@ -49,3 +56,4 @@ class PartyService:
         Returns a json response"""
         return requests.delete(url=f"{self.base_url}{self.delete_party_by_id_endpoint}{party_id}").json() 
 
+    
