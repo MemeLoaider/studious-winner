@@ -64,6 +64,7 @@ autocmd BufEnter * if tabpagenr('$') == 1 && winnr('$') == 1 && exists('b:NERDTr
 "Terminal"
 :set splitbelow
 :term ++rows=20
+:set splitbelow!
 
 "----------AUTOCMDs----------"
 :autocmd FileType python nnoremap <localleader>c I#<esc>
