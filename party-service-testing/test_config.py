@@ -5,6 +5,7 @@ from test_logic.party_service_implementation import PartyService
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from test_logic.models import PartyStuffWrapper
+from test_logic.utils import Generator
 import pytest
 
 
@@ -50,4 +51,9 @@ def db_session():
 @pytest.fixture(scope='session')
 def db_wrapper(db_session) -> PartyStuffWrapper:
     return PartyStuffWrapper(db_session)
+
+
+@pytest.fixture(scope='session')
+def generator(db_wrapper) -> Generator:
+    return Generator(db_wrapper)
 
