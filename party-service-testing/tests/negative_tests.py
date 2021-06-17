@@ -2,13 +2,19 @@
 from test_logic.data_transfer_objects import Party, UpdateHostDTO
 import random
 import pytest
+import random
+
+
+random_invalid_data = [random.randint(199, 10000) for x in range(3)]
 
 
 @pytest.mark.usefixtures("party_service", "db_session", "db_wrapper", "generator")
 class TestNegative:
 
-    def test_get_non_existent_party(db_wrapper, party_service, generator):  
-        response = party_service.get_single_party_by_id(generator.get_incorrect_party_id()).json()
+
+    @pytest.mark.parametrize("incorrect_party_id", random_invalid_data)
+    def test_get_non_existent_party(db_wrapper, party_service, incorrect_party_id):  
+        response = party_service.get_single_party_by_id(incorrect_party_id).json()
         assert response['status'] == "Party was not found"
     
     
