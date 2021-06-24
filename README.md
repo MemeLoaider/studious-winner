@@ -3,7 +3,14 @@ This is a special repo for memer affairs.
 
 Folder **different-stuff** contains some many things that relate to my work in most universal manner. Feel free to peek inside!
 
-Folder **party-service** contains a simple microservice project on python with flask framework. Work in progress...
+Folder **party-service** contains a simple microservice project on python with flask framework. For running in docker-compose (or any other variant) a file with environment variables has to be created. For example, **.env**.
+The list of environment variables:
+* FLASK\_ENV - specifies current environment.
+* SQLALCHEMY\_DATABASE\_URI - URI for connecting to the database with object relational mapping. Example of URI: "mysql+pymysql://root:1234@db:3306/mysql". Pay closer attention to the hostname of database, because when application is run via docker-compose the name of database is equal to the name of service that uses database image inside **docker-compose.yml** file.
+* MYSQL\_ROOT\_PASSWORD - represents DB root password.
+* MYSQL\_DATABASE - represents base database. For example, mysql.
+* MYSQL\_USER - specifies database user.
+* MYSQL\_PASSWORD - specifies db user's password.
 
 Folder **party-service-testing** contains a simple testing project for testing **party-service** api.
 For testing in environment special file called **.env** has to be created (you can call it whatever you want but it should contain environment variables).
