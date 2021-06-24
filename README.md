@@ -47,7 +47,7 @@ UPDATE_HOST_ENDPOINT=/party/update-host
 DELETE_PARTY_ENDPOINT=/party/ #Append party_id after this slash.
 
 ###Database connection###
-DB_URL=mysql+pymysql://root:1234@localhost:3306/party
+DB_URL=mysql+pymysql://root:1234@localhost:3003/party
 
 ```
 
