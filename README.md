@@ -11,6 +11,17 @@ The list of environment variables:
 * MYSQL\_DATABASE - represents base database. For example, mysql.
 * MYSQL\_USER - specifies database user.
 * MYSQL\_PASSWORD - specifies db user's password.
+Example for **.env** file in **party-service**:
+```
+#party-service .env file#
+FLASK_ENV=local
+SQLALCHEMY_DATABASE_URI=mysql+pymysql://root:1234@db:3306/mysql
+
+MYSQL_ROOT_PASSWORD=1234
+MYSQL_DATABASE=mysql
+MYSQL_USER=someuser
+MYSQL_PASSWORD=someuser
+```
 
 Folder **party-service-testing** contains a simple testing project for testing **party-service** api.
 For testing in environment special file called **.env** has to be created (you can call it whatever you want but it should contain environment variables).
@@ -23,5 +34,21 @@ The list of enviroment variables for testing:
 * UPDATE\_HOST\_ENDPOINT - an endpoint for updating pary host.
 * DELETE\_PARTY\_ENDPOINT - an endpoint for deleting party.
 * DB\_URL - a url for connecting to database with parties. It has to be configured for using with sqlalchemy, so the example can be like: "mysql+pymysql://username:usrpassword@localhost:3306/party"
+
+Example for **.env** file in **party-service-testing**
+```
+###Local Config for testing###
+ENV=LOCAL
+PARTY_SERVICE_URL=http://localhost:5050
+GET_ALL_PARTIES_ENDPOINT=/party
+GET_SINGLE_PARTY_ENDPOINT=/party/ #Append party_id after this slash.
+CREATE_PARTY_ENDPOINT=/party
+UPDATE_HOST_ENDPOINT=/party/update-host
+DELETE_PARTY_ENDPOINT=/party/ #Append party_id after this slash.
+
+###Database connection###
+DB_URL=mysql+pymysql://root:1234@localhost:3306/party
+
+```
 
 
