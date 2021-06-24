@@ -1,6 +1,6 @@
 ###positive_tests.py###
 from test_logic.data_transfer_objects import Party, UpdateHostDTO
-from test_config import party_service, db_session, db_wrapper
+from conftest import party_service, db_session, db_wrapper
 import pytest
 
 
