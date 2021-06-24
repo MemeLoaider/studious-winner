@@ -3,10 +3,11 @@ version: "3.9"
 services:
   db:
     image: mysql:5.7
-    network_mode: host
     volumes:
       - db_data:/var/lib/mysql
     restart: always
+    expose:
+      - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE} 
@@ -17,7 +18,8 @@ services:
     depends_on:
       - db
     build: .
-    network_mode: host 
+    ports:
+      - "5050:5050"
     restart: always
     environment:
       FLASK_ENV: ${FLASK_ENV}
