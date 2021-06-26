@@ -1,16 +1,20 @@
 package org.kirish.candyservice.web;
 
 import org.kirish.candyservice.domain.Candy;
+import org.kirish.candyservice.domain.ErrorMessage;
 import org.kirish.candyservice.domain.ResponseMessage;
 import org.kirish.candyservice.exceptions.CandyNotFoundException;
 import org.kirish.candyservice.jpa.CandyRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
-@RequestMapping(path="/candy")
+@RequestMapping(path = "/candy")
 public class CandyController {
 
     Logger logger = LoggerFactory.getLogger(CandyController.class);
@@ -18,25 +22,28 @@ public class CandyController {
     @Autowired
     private CandyRepository candyRepository;
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(CandyNotFoundException.class)
+    private ErrorMessage handleNotFoundException(HttpServletRequest request, Exception ex) {
+
+        return new ErrorMessage(request.getRequestURI(), ex.getMessage());
+    }
+
+
     @PostMapping
     public ResponseMessage createCandy(@RequestBody Candy candyToCreate) {
-        logger.info("Receiving new request for creating person: " + candyToCreate.toString());
+        logger.info("Receiving new request for creating candy: " + candyToCreate.toString());
         long id = candyRepository.save(candyToCreate).getId();
         return new ResponseMessage(id, "Candy has been created.");
     }
 
     @PutMapping
     public ResponseMessage updateCandy(@RequestBody Candy candyToUpdate) {
-        Candy candy = null;
-        try {
-            candy = candyRepository
-                    .findById(candyToUpdate.getId())
-                    .orElseThrow(() -> new CandyNotFoundException(
-                            String.format("Candy with id %s was not found", candyToUpdate.getId())
-                    ));
-        } catch (CandyNotFoundException exception) {
-            return new ResponseMessage(candyToUpdate.getId(), exception.getMessage());
-        }
+        Candy candy = candyRepository
+                .findById(candyToUpdate.getId())
+                .orElseThrow(() -> new CandyNotFoundException(
+                        String.format("Candy with id %s was not found", candyToUpdate.getId())
+                ));
         candy.setName(candyToUpdate.getName());
         candyRepository.save(candy);
         return new ResponseMessage(candy.getId(), "Candy has been updated.");
