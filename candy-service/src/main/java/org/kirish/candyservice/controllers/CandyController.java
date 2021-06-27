@@ -1,15 +1,13 @@
 package org.kirish.candyservice.controllers;
 
 import org.kirish.candyservice.domain.Candy;
-import org.kirish.candyservice.domain.ErrorMessage;
 import org.kirish.candyservice.domain.ResponseMessage;
-import org.kirish.candyservice.exceptions.CandyNotFoundException;
 import org.kirish.candyservice.exceptions.NullCandyException;
 import org.kirish.candyservice.service.CandyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,18 +22,12 @@ public class CandyController {
     @Autowired
     private CandyService candyService;
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(CandyNotFoundException.class)
-    private ErrorMessage handleNotFoundException(HttpServletRequest request, Exception ex) {
-        return new ErrorMessage(request.getRequestURI(), ex.getMessage());
-    }
-
     @PostMapping
-    public ResponseMessage createCandy(@RequestBody Candy candyToCreate) {
+    public ResponseMessage createCandy(@RequestBody(required = false) Candy candyToCreate) {
         if(Objects.isNull(candyToCreate)) {
             throw new NullCandyException("In order to create a candy it has to be not null!");
         }
-        LOGGER.info("Receiving new request for creating candy: " + candyToCreate.toString());
+        LOGGER.info("Receiving new request for creating candy: " + candyToCreate);
         long id = candyService.saveCandyInDB(candyToCreate);
         return new ResponseMessage(id, "Candy has been created.");
     }
