@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ErrorMessage {
 
-    private String url;
+    private String error;
     private String message;
 
 }
