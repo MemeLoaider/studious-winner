@@ -1,4 +1,4 @@
-package org.kirish.candyservice.web;
+package org.kirish.candyservice.controllers;
 
 import org.kirish.candyservice.domain.Candy;
 import org.kirish.candyservice.domain.ErrorMessage;

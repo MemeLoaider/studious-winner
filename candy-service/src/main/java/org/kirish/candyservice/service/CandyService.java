@@ -66,7 +66,9 @@ public class CandyService {
      * @param id id of candy to be deleted.
      */
     public void deleteCandyById(long id) {
-        candyRepository.deleteById(id);
+        //Doing deletion via retrieving Candy from DB in order to check if Candy exists
+        Candy candyToDelete = this.getCandyByIdFromDB(id);
+        candyRepository.deleteById(candyToDelete.getId());
     }
 
 }
