@@ -8,4 +8,12 @@ public class CandyNotFoundException extends RuntimeException {
     public CandyNotFoundException(String message) {
         super(message);
     }
+
+    public CandyNotFoundException(String message, Throwable throwable) {
+        super(message, throwable);
+    }
+
+    public CandyNotFoundException(Throwable throwable) {
+        super(throwable);
+    }
 }
